@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
                 Log.d("myWeather", "Net OK");
                 queryWeatherCode(cityCode);
+//                Toast.makeText(MainActivity.this, "Net OK", Toast.LENGTH_LONG).show();
             } else {
                 Log.d("myWeather", "Net Fail");
                 Toast.makeText(MainActivity.this, "Net Fail", Toast.LENGTH_LONG).show();

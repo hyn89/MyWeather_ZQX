@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.smart.hyn.myweather.com.smart.hyn.bean.TodayWeather;
 import com.smart.hyn.myweather.util.NetUtil;
 
+import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -75,7 +76,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         weekTv = (TextView)findViewById(R.id.week_today);
         pmDataTv = (TextView)findViewById(R.id.pm_data);
         pmQualityTv = (TextView)findViewById(R.id.pm2_5_quality);
-        pmImg = (ImageView)findViewById(R.id.weather_img);
+        pmImg = (ImageView)findViewById(R.id.pm2_5_img);
+        temperatureTv = (TextView)findViewById(R.id.temperature);
+        climateTv = (TextView)findViewById(R.id.climate);
+        windTv = (TextView)findViewById(R.id.wind);
+        weatherImg = (ImageView)findViewById(R.id.weather_img);
 
         city_name_Tv.setText("N/A");
         cityTv.setText("N/A");
@@ -84,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         weekTv.setText("N/A");
         pmDataTv.setText("N/A");
         pmQualityTv.setText("N/A");
+        temperatureTv.setText("N/A");
+        climateTv.setText("N/A");
+        windTv.setText("N/A");
     }
 
     private void queryWeatherCode(String cityCode){

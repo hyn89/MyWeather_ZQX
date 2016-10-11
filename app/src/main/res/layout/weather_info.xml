@@ -154,6 +154,7 @@
                         android:src="@drawable/biz_plugin_weather_0_50"/>
                 </LinearLayout>
                 <TextView
+                    android:id="@+id/pm2_5_quality"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

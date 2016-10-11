@@ -1,6 +1,9 @@
 package com.smart.hyn.myweather;
 
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -210,6 +213,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return todayWeather;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void updateClimateImage(){
+        switch (climateTv.toString()){
+            case "晴":
+                weatherImg.setImageDrawable(getDrawable(R.drawable.biz_plugin_weather_qing));
+                break;
+            case "暴雪":
+                weatherImg.setImageDrawable(getDrawable(R.drawable.biz_plugin_weather_baoxue));
+                break;
+            default:
+                weatherImg.setImageDrawable(getDrawable(R.drawable.biz_plugin_weather_qing));
+        }
+    }
+
     public void updateTodayWeather(TodayWeather todayWeather){
         city_name_Tv.setText(todayWeather.getCity() + "天气");
         cityTv.setText(todayWeather.getCity());
@@ -222,6 +239,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         climateTv.setText(todayWeather.getType());
         windTv.setText("风力：" + todayWeather.getFengli());
         Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
+
+        updateClimateImage();
     }
 
     @Override

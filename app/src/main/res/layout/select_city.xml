@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/selection_bar"
         android:layout_width="match_parent"
         android:layout_height="45.0dip"
         android:background="#ffcd2626">
@@ -33,5 +34,17 @@
             android:gravity = "center"
             />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#555"
+        android:layout_below="@id/selection_bar">
+        <ListView
+            android:id="@+id/selection_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+    </RelativeLayout>
+
 
 </RelativeLayout>

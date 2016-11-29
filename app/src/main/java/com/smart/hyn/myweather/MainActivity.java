@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mCitySelect;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv, temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
+    private ProgressBar titleUpdateProgress;
 
     private Handler mHandler = new Handler(){
         public void handleMessage(android.os.Message msg){
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mUpdateBtn.setOnClickListener(this);
         mCitySelect= (ImageView)findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
+        titleUpdateProgress = (ProgressBar)findViewById(R.id.progress_bar);
 
         if(NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE){
             Log.d("myWeather", "Net OK");
@@ -271,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
 
         updateClimateImage();
+        mUpdateBtn.setVisibility(View.VISIBLE);
+        titleUpdateProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -282,6 +287,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (view.getId() == R.id.title_update_btn) {
+            //change view visibility
+            mUpdateBtn.setVisibility(View.INVISIBLE);
+            titleUpdateProgress.setVisibility(View.VISIBLE);
+            //update function
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             String cityCode = sharedPreferences.getString("main_city_code", "101010100");
             Log.d("myWeather", cityCode);

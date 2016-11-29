@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/future_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="25日 星期五"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/future_temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="22℃ ~ 25℃"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/future_weather_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Forg"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"/>
+    <TextView
+        android:id="@+id/future_weather_wind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WE Wind"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+
+</LinearLayout>

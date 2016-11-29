@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <include layout="@layout/future_weather_show"
+        android:id="@+id/future_weather_4"/>
+    <include layout="@layout/future_weather_show"
+        android:id="@+id/future_weather_5"/>
+    <include layout="@layout/future_weather_show"
+        android:id="@+id/future_weather_6"/>
+
+</LinearLayout>

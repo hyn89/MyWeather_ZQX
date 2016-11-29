@@ -7,9 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,6 +34,8 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,6 +45,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv, temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
     private ProgressBar titleUpdateProgress;
+    private String currCityCode;
+
+    private FutureWeatherAdapter fwAdapter;
+    private ViewPager futureWeathers;
+    private List<View> fwViews;
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor prefEditor;
 
     private Handler mHandler = new Handler(){
         public void handleMessage(android.os.Message msg){
@@ -73,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         initView();
+        showGuid();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+        currCityCode = sharedPreferences.getString("main_city_code", "101010100");
+
+        updateDataFromNet();
     }
 
     private void initView(){
@@ -99,6 +118,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         temperatureTv.setText("N/A");
         climateTv.setText("N/A");
         windTv.setText("N/A");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        fwViews = new ArrayList<View>();
+        fwViews.add(inflater.inflate(R.layout.future_weathers_1,null));
+        fwViews.add(inflater.inflate(R.layout.future_weathers_2,null));
+        fwAdapter = new FutureWeatherAdapter(fwViews, this);
+        futureWeathers = (ViewPager)findViewById(R.id.future_weathers);
+        futureWeathers.setAdapter(fwAdapter);
+    }
+
+    private void showGuid(){
+        preferences = getSharedPreferences("guid", MODE_PRIVATE);
+        if(preferences.getBoolean("firstLaunch", true)){
+            prefEditor = preferences.edit();
+            prefEditor.putBoolean("firstLaunch", false);
+            prefEditor.commit();
+            Intent i = new Intent(this, Guid.class);
+            startActivity(i);
+        }
     }
 
     private void queryWeatherCode(String cityCode){
@@ -247,12 +285,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 1 && resultCode == RESULT_OK){
-            String newCityCode = data.getStringExtra("cityCode");
-            Log.d("myWeather", "当前选择的城市代码：" + newCityCode);
+            currCityCode = data.getStringExtra("cityCode");
+            Log.d("myWeather", "当前选择的城市代码：" + currCityCode);
 
             if(NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE){
                 Log.d("myWeather", "Net is OK");
-                queryWeatherCode(newCityCode);
+                queryWeatherCode(currCityCode);
             }else{
                 Log.d("myWeather", "Net is Failed");
                 Toast.makeText(MainActivity.this, "Net is Failed", Toast.LENGTH_LONG).show();
@@ -291,20 +329,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mUpdateBtn.setVisibility(View.INVISIBLE);
             titleUpdateProgress.setVisibility(View.VISIBLE);
             //update function
-            SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
-            String cityCode = sharedPreferences.getString("main_city_code", "101010100");
-            Log.d("myWeather", cityCode);
-
-            if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
-                Log.d("myWeather", "Net OK");
-                queryWeatherCode(cityCode);
-//                Toast.makeText(MainActivity.this, "Net OK", Toast.LENGTH_LONG).show();
-            } else {
-                Log.d("myWeather", "Net Fail");
-                Toast.makeText(MainActivity.this, "Net Fail", Toast.LENGTH_LONG).show();
-            }
+            updateDataFromNet();
         }
     }
 
+    private void updateDataFromNet(){
+        Log.d("myWeather", currCityCode);
+
+        if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
+            Log.d("myWeather", "Net OK");
+            queryWeatherCode(currCityCode);
+//                Toast.makeText(MainActivity.this, "Net OK", Toast.LENGTH_LONG).show();
+        } else {
+            Log.d("myWeather", "Net Fail");
+            Toast.makeText(MainActivity.this, "Net Fail", Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

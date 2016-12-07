@@ -1,7 +1,10 @@
 package com.smart.hyn.myweather;
 
 import android.app.Application;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.smart.hyn.myweather.com.smart.hyn.bean.City;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by hyn on 16-11-1.
@@ -26,6 +30,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        setAppLanguage();
         Log.d(TAG, "MyApplication OnCreate");
 
         myApplication = this;
@@ -35,6 +41,15 @@ public class MyApplication extends Application {
 
     public static MyApplication getInstance(){
         return myApplication;
+    }
+
+    private void setAppLanguage(){
+        Resources resources = this.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        // 应用用户选择语言
+        config.locale = Locale.SIMPLIFIED_CHINESE;
+        resources.updateConfiguration(config, dm);
     }
 
     private CityDB openCityDB(){

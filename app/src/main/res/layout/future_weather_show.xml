@@ -11,10 +11,16 @@
         android:id="@+id/future_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="25日 星期五"
+        android:text="星期五"
         android:gravity="center_horizontal"
         android:textColor="@android:color/white"
         android:textSize="18sp"/>
+    <ImageView
+        android:id="@+id/future_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/biz_plugin_weather_daxue"/>
     <TextView
         android:id="@+id/future_temperature"
         android:layout_width="match_parent"

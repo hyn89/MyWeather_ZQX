@@ -130,9 +130,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showGuid(){
         preferences = getSharedPreferences("guid", MODE_PRIVATE);
-        if(preferences.getBoolean("firstLaunch", true)){
+        if(preferences.getBoolean("firstLaunch", false)){
             prefEditor = preferences.edit();
-            prefEditor.putBoolean("firstLaunch", false);
+            prefEditor.putBoolean("firstLaunch", true);
             prefEditor.commit();
             Intent i = new Intent(this, Guid.class);
             startActivity(i);
@@ -299,9 +299,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateTodayWeather(TodayWeather todayWeather){
-        city_name_Tv.setText(todayWeather.getCity() + "天气");
+        city_name_Tv.setText(todayWeather.getCity() + getString(R.string.wheather) );
         cityTv.setText(todayWeather.getCity());
-        timeTv.setText(todayWeather.getUpdateTime() + "发布");
+        timeTv.setText(todayWeather.getUpdateTime() + getString(R.string.publish));
         humidityTv.setText("湿度：" + todayWeather.getShidu());
         pmDataTv.setText(todayWeather.getPm25());
         pmQualityTv.setText(todayWeather.getQuality());

@@ -22,7 +22,9 @@
         </activity>
         <activity
             android:name=".SelectCity"
-            android:label="SelectCity"/>
+            android:label="SelectCity">
+
+        </activity>
         <activity android:name=".Guid">
 
         </activity>

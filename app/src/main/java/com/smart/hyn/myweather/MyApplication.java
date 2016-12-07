@@ -29,13 +29,10 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
-        super.onCreate();
 
-        Resources resources = this.getResources();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-        Configuration config = resources.getConfiguration();
-        config.locale = Locale.SIMPLIFIED_CHINESE;
-        resources.updateConfiguration(config, dm);
+        config();
+
+        super.onCreate();
 
         Log.d(TAG, "MyApplication OnCreate");
 
@@ -46,6 +43,14 @@ public class MyApplication extends Application {
 
     public static MyApplication getInstance(){
         return myApplication;
+    }
+
+    private void config(){
+        Resources resources = this.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        config.locale = Locale.SIMPLIFIED_CHINESE;
+        resources.updateConfiguration(config, dm);
     }
 
     private CityDB openCityDB(){

@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         city_name_Tv.setText(todayWeather.getCity() + getString(R.string.wheather) );
         cityTv.setText(todayWeather.getCity());
         timeTv.setText(todayWeather.getUpdateTime() + getString(R.string.publish));
-        humidityTv.setText("湿度：" + todayWeather.getShidu());
+        humidityTv.setText(getString(R.string.humidity) + todayWeather.getShidu());
         pmDataTv.setText(todayWeather.getPm25());
         pmQualityTv.setText(todayWeather.getQuality());
         weekTv.setText(todayWeather.getDate());

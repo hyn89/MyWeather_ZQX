@@ -4,4 +4,5 @@
     <string name="wheather">天气</string>
     <string name="publish">发布</string>
     <string name="humidity">湿度：</string>
+    <string name="wind">风力：</string>
 </resources>

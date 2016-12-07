@@ -31,7 +31,12 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        setAppLanguage();
+        Resources resources = this.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        config.locale = Locale.SIMPLIFIED_CHINESE;
+        resources.updateConfiguration(config, dm);
+
         Log.d(TAG, "MyApplication OnCreate");
 
         myApplication = this;
@@ -41,15 +46,6 @@ public class MyApplication extends Application {
 
     public static MyApplication getInstance(){
         return myApplication;
-    }
-
-    private void setAppLanguage(){
-        Resources resources = this.getResources();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-        Configuration config = resources.getConfiguration();
-        // 应用用户选择语言
-        config.locale = Locale.SIMPLIFIED_CHINESE;
-        resources.updateConfiguration(config, dm);
     }
 
     private CityDB openCityDB(){

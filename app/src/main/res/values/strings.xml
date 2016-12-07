@@ -2,5 +2,6 @@
     <string name="app_name">MyWeatherAPP</string>
     <string name="wheather">Wheather</string>
     <string name="publish">Publish</string>
-    <string name="humidity">humidity：</string>
+    <string name="humidity">humidity: </string>
+    <string name="wind">wind: </string>
 </resources>

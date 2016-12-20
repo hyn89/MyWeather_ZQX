@@ -2,6 +2,7 @@ package com.smart.hyn.myweather;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,9 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.smart.hyn.myweather.com.smart.hyn.bean.City;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +35,23 @@ public class SelectCity extends Activity implements View.OnClickListener{
     private String selectedCityCode;
     private EditText searchText;
     private TextWatcher searchTextWatcher;
+    private TextView title;
+    private SharedPreferences prefConfig;
+    private SharedPreferences.Editor prefConfigEditor;
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.select_city);
         mBackBtn = (ImageView)findViewById(R.id.title_back);
         mBackBtn.setOnClickListener((View.OnClickListener) this);
+
+        title = (TextView)findViewById(R.id.title_name);
+        Bundle bundle = this.getIntent().getExtras();
+        String name = bundle.getString("city_name");
+        title.setText(getString(R.string.current_city) + name);
+        selectedCityCode = bundle.getString("city_code");
+
         InitCityList();
 
         searchText = (EditText)findViewById(R.id.search_edit);

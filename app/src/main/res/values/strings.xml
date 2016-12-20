@@ -4,4 +4,8 @@
     <string name="publish">Publish</string>
     <string name="humidity">humidity: </string>
     <string name="wind">wind: </string>
+    <string name="updateSuccess">Update Success</string>
+    <string name="net_ok">Net OK</string>
+    <string name="net_fail">Net Failed</string>
+    <string name="current_city">Current City: </string>
 </resources>

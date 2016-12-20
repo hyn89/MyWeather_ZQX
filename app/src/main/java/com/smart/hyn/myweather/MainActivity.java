@@ -3,11 +3,9 @@ package com.smart.hyn.myweather;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +20,6 @@ import android.widget.Toast;
 import com.smart.hyn.myweather.com.smart.hyn.bean.TodayWeather;
 import com.smart.hyn.myweather.util.NetUtil;
 
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -40,19 +37,24 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int UPDATE_TODAY_WEATHER = 1;
+    private static final String CITY_NAME_KEY = "city_name";
+    private static final String CITY_CODE_KEY = "main_city_code";
     private ImageView mUpdateBtn;
     private ImageView mCitySelect;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv, temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
     private ProgressBar titleUpdateProgress;
     private String currCityCode;
+    private String currCityName;
 
     private FutureWeatherAdapter fwAdapter;
     private ViewPager futureWeathers;
     private List<View> fwViews;
 
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor prefEditor;
+    private SharedPreferences prefGuid;
+    private SharedPreferences.Editor prefGuidEditor;
+    private SharedPreferences prefConfig;
+    private SharedPreferences.Editor prefConfigEditor;
 
     private Handler mHandler = new Handler(){
         public void handleMessage(android.os.Message msg){
@@ -79,17 +81,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE){
             Log.d("myWeather", "Net OK");
-            Toast.makeText(MainActivity.this, "Net OK", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, getString(R.string.net_ok), Toast.LENGTH_LONG).show();
         }else{
             Log.d("myWeather","Net Fail");
-            Toast.makeText(MainActivity.this, "Net Fail", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, getString(R.string.net_fail), Toast.LENGTH_LONG).show();
         }
 
         initView();
         showGuid();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
-        currCityCode = sharedPreferences.getString("main_city_code", "101010100");
+        prefConfig = getSharedPreferences("config", MODE_PRIVATE);
+        currCityCode = prefConfig.getString(CITY_CODE_KEY, "101010100");
+        currCityName = "北京";
+        Toast.makeText(this, currCityCode, Toast.LENGTH_LONG).show();
 
         updateDataFromNet();
     }
@@ -129,11 +133,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showGuid(){
-        preferences = getSharedPreferences("guid", MODE_PRIVATE);
-        if(preferences.getBoolean("firstLaunch", false)){
-            prefEditor = preferences.edit();
-            prefEditor.putBoolean("firstLaunch", true);
-            prefEditor.commit();
+        prefGuid = getSharedPreferences("guid", MODE_PRIVATE);
+        if(prefGuid.getBoolean("firstLaunch", false)){
+            prefGuidEditor = prefGuid.edit();
+            prefGuidEditor.putBoolean("firstLaunch", true);
+            prefGuidEditor.commit();
             Intent i = new Intent(this, Guid.class);
             startActivity(i);
         }
@@ -167,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     todayWeather = parseXML(responseStr);
                     if(todayWeather != null){
                         Log.d("myWeather", todayWeather.toString());
+
+                        currCityName = todayWeather.getCity();
 
                         Message msg = new Message();
                         msg.what = UPDATE_TODAY_WEATHER;
@@ -293,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 queryWeatherCode(currCityCode);
             }else{
                 Log.d("myWeather", "Net is Failed");
-                Toast.makeText(MainActivity.this, "Net is Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, getString(R.string.net_fail), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -308,8 +314,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         weekTv.setText(todayWeather.getDate());
         temperatureTv.setText(todayWeather.getHigh() + "~" + todayWeather.getLow());
         climateTv.setText(todayWeather.getType());
-        windTv.setText("风力：" + todayWeather.getFengli());
-        Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
+        windTv.setText(getString(R.string.wind) + todayWeather.getFengli());
+        Toast.makeText(MainActivity.this, getString(R.string.updateSuccess), Toast.LENGTH_SHORT).show();
 
         updateClimateImage();
         mUpdateBtn.setVisibility(View.VISIBLE);
@@ -320,6 +326,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.getId() == R.id.title_city_manager){
             Intent i = new Intent(this, SelectCity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("city_name", currCityName);
+            bundle.putString("city_code", currCityCode);
+            i.putExtras(bundle);
 //            startActivity(i);
             startActivityForResult(i,1);
         }

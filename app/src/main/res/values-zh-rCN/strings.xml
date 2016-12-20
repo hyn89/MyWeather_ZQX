@@ -5,4 +5,8 @@
     <string name="publish">发布</string>
     <string name="humidity">湿度：</string>
     <string name="wind">风力：</string>
+    <string name="updateSuccess">更新成功</string>
+    <string name="net_ok">网络正常</string>
+    <string name="net_fail">连网失败</string>
+    <string name="current_city">当前城市：</string>
 </resources>
